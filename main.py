@@ -3,7 +3,7 @@ from tkinter import messagebox
 import pygame
 import os
 
-# تشغيل الصوت باستخدام pygame
+# تشغيل الصوت
 def تشغيل_الصوت(المسار):
     try:
         pygame.mixer.init()
@@ -12,12 +12,12 @@ def تشغيل_الصوت(المسار):
     except Exception as e:
         print(f"[!] فشل تشغيل الصوت: {e}")
 
-# تنفيذ الأوامر
+# تنفيذ العمليات
 def تنفيذ_أمر(اسم):
     messagebox.showinfo("StrikeNet", f"تم تنفيذ: {اسم}")
     تشغيل_الصوت("assets/execute.mp3")
 
-# واجهة التشغيل
+# الواجهة
 def تشغيل_الواجهة():
     pygame.init()
     root = tk.Tk()
@@ -25,7 +25,6 @@ def تشغيل_الواجهة():
     root.geometry("500x400")
     root.configure(bg="black")
 
-    # صورة الشعار
     try:
         شعار = tk.PhotoImage(file="assets/logo.png")
         tk.Label(root, image=شعار, bg="black").pack(pady=10)
