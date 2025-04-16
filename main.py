@@ -1,42 +1,46 @@
 import tkinter as tk
 from tkinter import messagebox
-import base64
+import pygame
 import os
-from playsound import playsound
 
-# تشغيل صوت عند التشغيل (بصيغة mp3)
-def تشغيل_الصوت():
+# تشغيل الصوت باستخدام pygame
+def تشغيل_الصوت(المسار):
     try:
-        playsound("assets/intro.mp3")
-    except:
-        pass
+        pygame.mixer.init()
+        pygame.mixer.music.load(المسار)
+        pygame.mixer.music.play()
+    except Exception as e:
+        print(f"[!] فشل تشغيل الصوت: {e}")
 
-# تنفيذ العمليات
-def تنفيذ_عملية(اسم):
+# تنفيذ الأوامر
+def تنفيذ_أمر(اسم):
     messagebox.showinfo("StrikeNet", f"تم تنفيذ: {اسم}")
-    try:
-        playsound("assets/execute.mp3")
-    except:
-        pass
+    تشغيل_الصوت("assets/execute.mp3")
 
-# الواجهة
-def بناء_الواجهة():
+# واجهة التشغيل
+def تشغيل_الواجهة():
+    pygame.init()
     root = tk.Tk()
-    root.title("StrikeNet – قيادة أبوسالم")
+    root.title("StrikeNet – وحدة القيادة")
     root.geometry("500x400")
     root.configure(bg="black")
 
-    شعار = tk.PhotoImage(file="assets/logo.png")
-    tk.Label(root, image=شعار, bg="black").pack(pady=10)
+    # صورة الشعار
+    try:
+        شعار = tk.PhotoImage(file="assets/logo.png")
+        tk.Label(root, image=شعار, bg="black").pack(pady=10)
+    except:
+        tk.Label(root, text="(لا يوجد شعار)", bg="black", fg="gray").pack()
 
-    tk.Label(root, text="مرحباً بالقائد أبوسالم", fg="white", bg="black", font=("Helvetica", 14)).pack()
+    tk.Label(root, text="مرحبًا بالقائد أبوسالم", fg="white", bg="black", font=("Arial", 14)).pack(pady=10)
 
-    tk.Button(root, text="تشغيل ضربة رقمية", command=lambda: تنفيذ_عملية("ضربة رقمية"), width=30).pack(pady=10)
-    tk.Button(root, text="تشغيل أداة خارجية", command=lambda: تنفيذ_عملية("أداة خارجية"), width=30).pack(pady=10)
-    tk.Button(root, text="عرض سجل العمليات", command=lambda: تنفيذ_عملية("عرض السجل"), width=30).pack(pady=10)
-    tk.Button(root, text="خروج", command=root.destroy, width=30, bg="red").pack(pady=20)
+    tk.Button(root, text="ضربة رقمية", width=30, command=lambda: تنفيذ_أمر("ضربة رقمية")).pack(pady=5)
+    tk.Button(root, text="تشغيل أداة", width=30, command=lambda: تنفيذ_أمر("تشغيل أداة")).pack(pady=5)
+    tk.Button(root, text="عرض السجل", width=30, command=lambda: تنفيذ_أمر("عرض السجل")).pack(pady=5)
+    tk.Button(root, text="خروج", width=30, bg="red", command=root.destroy).pack(pady=20)
 
-    تشغيل_الصوت()
+    تشغيل_الصوت("assets/intro.mp3")
     root.mainloop()
 
-بناء_الواجهة()
+if __name__ == "__main__":
+    تشغيل_الواجهة()
